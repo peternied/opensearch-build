@@ -1,7 +1,7 @@
 @startuml
 skinparam backgroundColor lightgrey
 title
-Continuous Integration Artifact Access
+Continuous Integration a Artifact Access
 ci.opensearch.org
 endtitle
 
