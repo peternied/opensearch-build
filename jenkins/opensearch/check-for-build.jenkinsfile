@@ -6,8 +6,8 @@ pipeline {
     }
     triggers {
         parameterizedCron '''
-            H */12 * * * %INPUT_MANIFEST=1.3.0/opensearch-1.3.0.yml;TARGET_JOB_NAME=distribution-build-opensearch
-            H 1 * * * %INPUT_MANIFEST=2.0.0/opensearch-2.0.0.yml;TARGET_JOB_NAME=distribution-build-opensearch
+            H */12 * * * %INPUT_MANIFEST=1.3.0/opensearch-1.3.0.yml;TARGET_JOB_NAME=petern-distribution-build-opensearch
+            H 1 * * * %INPUT_MANIFEST=2.0.0/opensearch-2.0.0.yml;TARGET_JOB_NAME=petern-distribution-build-opensearch
         '''
     }
     parameters {
