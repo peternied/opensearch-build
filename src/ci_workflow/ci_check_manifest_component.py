@@ -8,8 +8,8 @@ import logging
 
 from build_workflow.build_args import BuildArgs
 from ci_workflow.ci_check import CiCheckDist
-from manifests import distribution
-from manifests.build_manifest import BuildManifest
+from manifests.build_manifest import BuildManifest, Component
+from manifests.distribution import Distribution
 
 
 class CiCheckManifestComponent(CiCheckDist):
@@ -21,7 +21,7 @@ class CiCheckManifestComponent(CiCheckDist):
         for architecture in BuildArgs.SUPPORTED_ARCHITECTURES:
             # Since we only have 'linux' builds now we hard code it to 'linux'
             # Once we have all platform builds on S3 we can then add a second loop for 'BuildArgs.SUPPORTED_PLATFORMS'
-            distribution_url = distribution.find_build_root(self.component.dist, "linux", architecture, self.target.name)
+            distribution_url = Distribution(self.component.dist, "linux", architecture, self.target.name).find_build_root()
             manifest_url = f"{distribution_url}/manifest.yml"
             self.build_manifest = BuildManifest.from_url(manifest_url)
             if self.component.name in self.build_manifest.components:

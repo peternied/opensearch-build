@@ -8,9 +8,9 @@ import logging
 import os
 import urllib.request
 
-import manifests
 from build_workflow.builder import Builder
 from manifests.build_manifest import BuildManifest
+from manifests.distribution import Distribution
 
 
 class BuilderFromDist(Builder):
@@ -19,6 +19,10 @@ class BuilderFromDist(Builder):
             self.url = manifest.repository
             self.ref = manifest.ref
             self.sha = manifest.commit_id
+
+    def __init__(self, component, target):
+        super.__init__(component, target)
+        self.distribution = Distribution(self.component.dist, self.target.platform, self.target.architecture, self.target_name)
 
     def checkout(self, work_dir):
         self.__download_build_manifest()
@@ -36,12 +40,13 @@ class BuilderFromDist(Builder):
         logging.info(f"Downloading {component_manifest.name} {component_manifest.version} ({component_manifest.commit_id}) ...")
         logging.info(f"Distribution was built from {component_manifest.repository}#{component_manifest.ref}")
         build_recorder.record_component(self.component.name, BuilderFromDist.ManifestGitRepository(component_manifest))
+        build_root = self.distribution.find_build_root()
         for artifact_type in component_manifest.artifacts:
             artifact_path = os.path.join(self.output_path, artifact_type)
             logging.info(f"Downloading into {artifact_path} ...")
             if artifact_type not in ["maven"]:  # avoid re-publishing maven artifacts, see https://github.com/opensearch-project/opensearch-build/issues/1279
                 for artifact in component_manifest.artifacts[artifact_type]:
-                    artifact_url = f"{self.distribution_url}/{artifact}"
+                    artifact_url = f"{build_root}/{artifact}"
                     artifact_dest = os.path.realpath(os.path.join(self.output_path, artifact))
                     os.makedirs(os.path.dirname(artifact_dest), exist_ok=True)
                     logging.info(f"Downloading {artifact_url} into {artifact_dest}")
@@ -49,7 +54,6 @@ class BuilderFromDist(Builder):
                     build_recorder.record_artifact(self.component.name, artifact_type, artifact, artifact_dest)
 
     def __download_build_manifest(self):
-        self.distribution_url = manifests.distribution.find_build_root(self.component.dist, self.target.platform, self.target.architecture, self.target_name)
-        manifest_url = f"{self.distribution_url}/manifest.yml"
+        manifest_url = f"{self.distribution.find_build_root()}/manifest.yml"
         logging.info(f"Downloading {manifest_url} ...")
         self.build_manifest = BuildManifest.from_url(manifest_url)

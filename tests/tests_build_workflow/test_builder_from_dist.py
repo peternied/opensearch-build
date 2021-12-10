@@ -63,6 +63,27 @@ class TestBuilderFromDist(unittest.TestCase):
             call('dist_url/plugins/opensearch-notifications-1.1.0.0.zip', '/local/home/petern/git/opensearch-build/builds/plugins/opensearch-notifications-1.1.0.0.zip')
         ])
 
+    
+    @patch("os.makedirs")
+    @patch("urllib.request.urlretrieve")
+    @patch("build_workflow.builder_from_dist.BuilderFromDist.ManifestGitRepository")
+    def test_export_artifacts(self, mock_manifest_git_repository, mock_urllib: Mock, mock_makedirs, *mocks):
+        build_recorder = MagicMock()
+        manifest_path = os.path.join(os.path.dirname(__file__), "data", "opensearch-build-windows-1.1.0.yml")
+        mock_builder = self.__mock_builder("notifications")
+        mock_builder.distribution_url = "dist_url"
+        mock_builder.build_manifest = BuildManifest.from_path(manifest_path)
+        mock_builder.export_artifacts(build_recorder)
+        build_recorder.record_component.assert_called_with(
+            "notifications", mock_manifest_git_repository.return_value)
+        mock_makedirs.assert_called_with(
+            os.path.realpath(os.path.join("builds", "plugins")),
+            exist_ok=True
+        )
+        mock_urllib.assert_has_calls([
+            call('dist_url/plugins/opensearch-notifications-1.1.0.0.zip', '/local/home/petern/git/opensearch-build/builds/plugins/opensearch-notifications-1.1.0.0.zip')
+        ])
+
     @patch("os.makedirs")
     @patch("urllib.request.urlretrieve")
     @patch("build_workflow.builder_from_dist.BuilderFromDist.ManifestGitRepository")
