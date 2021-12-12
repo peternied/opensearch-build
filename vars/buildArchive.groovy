@@ -3,7 +3,6 @@ void call(Map args = [:]) {
     buildManifest(args)
 
     echo "Archiving into zip: builds/**, ${args.manifest}"
-
     zip(
         zipFile: "archived-builds.zip",
         archive: true,
