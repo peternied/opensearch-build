@@ -9,21 +9,19 @@ pipeline {
         string(
             name: 'REPOSITORY',
             description: 'Repository to release, e.g. https://github.com/opensearch-project/opensearch-ruby.git',
-            require: true,
             trim: true
-        ),
+        )
         string(
             name: 'RELEASE_BRANCH',
             description: 'Branch name to release, e.g. 1.2.0',
-            require: true,
             trim: true
-        ),
+        )
         string(
             name: 'RUBY_INTERPRETER',
             description: 'ruby, jruby, etc',
-            default: 'ruby',
+            defaultValue: 'ruby',
             trim: true
-        ),
+        )
     }
     stages {
         stage('ruby-build-sign-upload') {
@@ -46,7 +44,7 @@ pipeline {
                         gem cert --add certs/opensearch-rubygems.pem
                         echo 'bash build.sh'
                     '''
-                    artifacts_path = [
+                    artifacts_path = ([
                         "${JOB_NAME}",
                         sh('basename `git rev-parse --show-toplevel`'), // name of the repository
                         "${RELEASE_BRANCH}",
@@ -65,7 +63,7 @@ pipeline {
                 }
             }
         }
-    },
+    }
     post {
         success {
             node('Jenkins-Agent-al2-x64-c54xlarge-Docker-Host') {
