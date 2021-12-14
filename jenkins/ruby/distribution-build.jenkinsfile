@@ -39,10 +39,8 @@ pipeline {
                         writeFile file: 'gem-private_key.pem', text: RUBYGEMS_PRIVATE_KEY
                     }
                     sh'''
-                        /bin/bash -l
-                        rvm use .gem
-                        rvm install $RUBY_INTERPRETER
-                        rvm use $RUBY_INTERPRETER
+                        /bin/bash --login "rvm install $RUBY_INTERPRETER"
+                        /bin/bash --login "rvm use $RUBY_INTERPRETER"
                         gem cert --add certs/opensearch-rubygems.pem
                         echo 'bash build.sh'
                     '''
