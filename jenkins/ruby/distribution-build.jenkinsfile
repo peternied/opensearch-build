@@ -12,6 +12,11 @@ pipeline {
             trim: true
         )
         string(
+            name: 'REPOSITORY_NAME',
+            description: 'Repository to release, e.g. opensearch-ruby',
+            trim: true
+        )
+        string(
             name: 'RELEASE_BRANCH',
             description: 'Branch name to release, e.g. 1.2.0',
             trim: true
@@ -47,7 +52,7 @@ pipeline {
                     '''
                     artifacts_path = ([
                         "${JOB_NAME}",
-                        sh('basename `git rev-parse --show-toplevel`'), // name of the repository
+                        "${REPOSITORY_NAME}",
                         "${RELEASE_BRANCH}",
                         "${BUILD_NUMBER}",
                         "builds"
@@ -85,11 +90,11 @@ pipeline {
         failure {
             node('Jenkins-Agent-al2-x64-c54xlarge-Docker-Host') {
                 script {
-                    // publishNotification(
-                    //     icon: ':warning:',
-                    //     message: 'Failed Build',
-                    //     credentialsId: 'BUILD_NOTICE_WEBHOOK',
-                    // )
+                    publishNotification(
+                        icon: ':warning:',
+                        message: 'Failed Build',
+                        credentialsId: 'BUILD_NOTICE_WEBHOOK',
+                    )
 
                     postCleanup()
                 }
