@@ -39,6 +39,7 @@ pipeline {
                         writeFile file: 'gem-private_key.pem', text: RUBYGEMS_PRIVATE_KEY
                     }
                     sh'''
+                        /bin/bash -l
                         rvm use .gem
                         rvm install $RUBY_INTERPRETER
                         rvm use $RUBY_INTERPRETER
