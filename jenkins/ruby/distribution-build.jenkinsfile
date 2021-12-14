@@ -29,6 +29,7 @@ pipeline {
                 docker {
                     label 'Jenkins-Agent-al2-x64-c54xlarge-Docker-Host'
                     image 'opensearchstaging/ci-runner:centos7-x64-arm64-jdkmulti-node10.24.1-cypress6.9.1-20211130'
+                    args "-u root"
                     alwaysPull true
                 }
             }
@@ -39,8 +40,8 @@ pipeline {
                         writeFile file: 'gem-private_key.pem', text: RUBYGEMS_PRIVATE_KEY
                     }
                     sh'''
-                        /bin/bash --login "rvm install $RUBY_INTERPRETER"
-                        /bin/bash --login "rvm use $RUBY_INTERPRETER"
+                        rvm install $RUBY_INTERPRETER
+                        rvm use $RUBY_INTERPRETER
                         gem cert --add certs/opensearch-rubygems.pem
                         echo 'bash build.sh'
                     '''
