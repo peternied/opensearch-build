@@ -47,7 +47,7 @@ pipeline {
                         unset GEM_PATH
                         export PATH=/usr/share/opensearch/.nvm/versions/node/v10.24.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
                         su - opensearch
-
+                        /bin/bash --login
                         source /etc/profile
                         /usr/local/rvm/bin/rvm user gemsets
                         /usr/local/rvm/bin/rvm install $RUBY_INTERPRETER
