@@ -29,7 +29,6 @@ pipeline {
                 docker {
                     label 'Jenkins-Agent-al2-x64-c54xlarge-Docker-Host'
                     image 'opensearchstaging/ci-runner:centos7-x64-arm64-jdkmulti-node10.24.1-cypress6.9.1-20211130'
-                    args '-u root' // Needed for installing RUBY_INTERPRETER 
                     alwaysPull true
                 }
             }
@@ -40,13 +39,9 @@ pipeline {
                         writeFile file: 'gem-private_key.pem', text: RUBYGEMS_PRIVATE_KEY
                     }
                     sh'''
-                        unset PATH
-                        export PATH=/usr/share/opensearch/.nvm/versions/node/v10.24.1/bin:/usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-                        unset RUBY_HOME
-                        unset GEM_HOME
-                        unset GEM_PATH
+                        source /etc/profile
+                        rvm user gemsets
                         rvm get stable --auto-dotfiles
-                        /etc/profile.d/rvm.sh
                         rvm install $RUBY_INTERPRETER
                         rvm --default use $RUBY_INTERPRETER
                         rvm list
