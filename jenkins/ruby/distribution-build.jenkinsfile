@@ -46,6 +46,7 @@ pipeline {
                         unset GEM_PATH
                         rvm get stable --auto-dotfiles
                         rvm install $RUBY_INTERPRETER
+                        /usr/bin/bash --login
                         rvm --default use $RUBY_INTERPRETER
                         rvm list
                         gem cert --add certs/opensearch-rubygems.pem
@@ -78,12 +79,12 @@ pipeline {
                 script {
                     def stashed = lib.jenkins.Messages.new(this).get(['ruby-build-sign-upload'])
 
-                    publishNotification(
-                        icon: ':white_check_mark:',
-                        message: 'Successful Build',
-                        credentialsId: 'BUILD_NOTICE_WEBHOOK',
-                        extra: stashed,
-                    )
+                    // publishNotification(
+                    //     icon: ':white_check_mark:',
+                    //     message: 'Successful Build',
+                    //     credentialsId: 'BUILD_NOTICE_WEBHOOK',
+                    //     extra: stashed,
+                    // )
 
                     postCleanup()
                 }
@@ -92,11 +93,11 @@ pipeline {
         failure {
             node('Jenkins-Agent-al2-x64-c54xlarge-Docker-Host') {
                 script {
-                    publishNotification(
-                        icon: ':warning:',
-                        message: 'Failed Build',
-                        credentialsId: 'BUILD_NOTICE_WEBHOOK',
-                    )
+                    // publishNotification(
+                    //     icon: ':warning:',
+                    //     message: 'Failed Build',
+                    //     credentialsId: 'BUILD_NOTICE_WEBHOOK',
+                    // )
 
                     postCleanup()
                 }
