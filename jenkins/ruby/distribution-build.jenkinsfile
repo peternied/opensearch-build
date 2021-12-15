@@ -40,6 +40,8 @@ pipeline {
                         writeFile file: 'gem-private_key.pem', text: RUBYGEMS_PRIVATE_KEY
                     }
                     sh'''
+                        usermod -a -G rvm opensearch
+                        su - opensearch
                         source /etc/profile
                         rvm user gemsets
                         rvm install $RUBY_INTERPRETER
