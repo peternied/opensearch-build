@@ -45,6 +45,7 @@ pipeline {
                         source /etc/profile
                         rvm user gemsets
                         rvm install $RUBY_INTERPRETER
+                        rvm uninstall ruby
                         rvm --default use $RUBY_INTERPRETER
                         rvm list
                         gem cert --add certs/opensearch-rubygems.pem
