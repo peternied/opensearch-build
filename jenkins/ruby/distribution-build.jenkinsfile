@@ -41,8 +41,7 @@ pipeline {
                     sh'''
                         source /etc/profile
                         rvm user gemsets
-                        sudo rvm get stable --auto-dotfiles
-                        sudo rvm install $RUBY_INTERPRETER
+                        rvm install $RUBY_INTERPRETER
                         rvm --default use $RUBY_INTERPRETER
                         rvm list
                         gem cert --add certs/opensearch-rubygems.pem
