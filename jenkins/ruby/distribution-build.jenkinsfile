@@ -47,7 +47,7 @@ pipeline {
                         unset GEM_HOME
                         unset GEM_PATH
                         rvm get stable --auto-dotfiles
-                        bash --login
+                        /etc/profile.d/rvm.sh
                         rvm install $RUBY_INTERPRETER
                         rvm --default use $RUBY_INTERPRETER
                         rvm list
