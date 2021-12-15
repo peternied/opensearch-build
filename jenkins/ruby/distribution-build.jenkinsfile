@@ -40,6 +40,7 @@ pipeline {
                         writeFile file: 'gem-private_key.pem', text: RUBYGEMS_PRIVATE_KEY
                     }
                     sh'''
+                        unset GEM_HOME
                         rvm get stable --auto-dotfiles
                         rvm install $RUBY_INTERPRETER
                         rvm --default use $RUBY_INTERPRETER
@@ -58,6 +59,7 @@ pipeline {
                         s3Upload(file: 'builds', bucket: "${ARTIFACT_BUCKET_NAME}", path: "${artifacts_path}")
                     }
                     lib.jenkins.Messages.new(this).add("${STAGE_NAME}", "Built artifacts into ${PUBLIC_ARTIFACT_URL}/${artifacts_path}.")
+                    postCleanup()
                 }
             }
             post {
