@@ -45,9 +45,9 @@ pipeline {
                         unset RUBY_HOME
                         unset GEM_HOME
                         unset GEM_PATH
+                        rvm uninstall ruby
                         rvm get stable --auto-dotfiles
                         rvm install $RUBY_INTERPRETER
-                        /usr/bin/bash --login
                         rvm --default use $RUBY_INTERPRETER
                         rvm list
                         gem cert --add certs/opensearch-rubygems.pem
