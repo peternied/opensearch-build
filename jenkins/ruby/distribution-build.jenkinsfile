@@ -42,6 +42,7 @@ pipeline {
                     sh'''
                         rvm install $RUBY_INTERPRETER
                         rvm --default use $RUBY_INTERPRETER
+                        rvm list
                         gem cert --add certs/opensearch-rubygems.pem
                         ./build.sh
                     '''
