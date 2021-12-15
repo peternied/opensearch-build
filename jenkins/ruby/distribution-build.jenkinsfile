@@ -49,10 +49,10 @@ pipeline {
                         su - opensearch
 
                         source /etc/profile
-                        rvm user gemsets
-                        rvm install $RUBY_INTERPRETER
-                        rvm --default use $RUBY_INTERPRETER
-                        rvm list
+                        /usr/local/rvm/bin/rvm user gemsets
+                        /usr/local/rvm/bin/rvm install $RUBY_INTERPRETER
+                        /usr/local/rvm/bin/rvm --default use $RUBY_INTERPRETER
+                        /usr/local/rvm/bin/rvm list
                         gem cert --add certs/opensearch-rubygems.pem
                         ./build.sh
                     '''
