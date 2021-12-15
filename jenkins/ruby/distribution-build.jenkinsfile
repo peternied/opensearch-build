@@ -45,8 +45,8 @@ pipeline {
                         unset RUBY_HOME
                         unset GEM_HOME
                         unset GEM_PATH
-                        rvm uninstall ruby
                         rvm get stable --auto-dotfiles
+                        rvm uninstall ruby
                         rvm install $RUBY_INTERPRETER
                         rvm --default use $RUBY_INTERPRETER
                         rvm list
