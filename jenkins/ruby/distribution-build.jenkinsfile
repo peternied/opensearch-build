@@ -41,11 +41,11 @@ pipeline {
                     }
                     sh'''
                         usermod -a -G rvm opensearch
-                        UNSET RUBY_HOME
-                        UNSET RVM_HOME
-                        UNSET GEM_HOME
-                        UNSET GEM_PATH
-                        EXPORT PATH=/usr/share/opensearch/.nvm/versions/node/v10.24.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+                        unset RUBY_HOME
+                        unset RVM_HOME
+                        unset GEM_HOME
+                        unset GEM_PATH
+                        export PATH=/usr/share/opensearch/.nvm/versions/node/v10.24.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
                         su - opensearch
 
                         source /etc/profile
