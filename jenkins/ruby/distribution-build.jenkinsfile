@@ -42,10 +42,16 @@ pipeline {
                     sh'''
                         usermod -a -G rvm opensearch
                         su - opensearch
+
+                        UNSET RUBY_HOME
+                        UNSET RVM_HOME
+                        UNSET GEM_HOME
+                        UNSET GEM_PATH
+                        EXPORT PATH=/usr/share/opensearch/.nvm/versions/node/v10.24.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
                         source /etc/profile
                         rvm user gemsets
                         rvm install $RUBY_INTERPRETER
-                        rvm uninstall ruby
                         rvm --default use $RUBY_INTERPRETER
                         rvm list
                         gem cert --add certs/opensearch-rubygems.pem
