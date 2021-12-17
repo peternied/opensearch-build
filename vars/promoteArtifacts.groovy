@@ -41,7 +41,7 @@ void call(Map args = [:]) {
             String pluginFullPath = ['plugins', pluginName, version].join('/')
             for (Closure action : fileActions) {
                 for (file in findFiles(glob: "**/${pluginName}*")) {
-                    action(file)
+                    action(file.getPath())
                 }
             } 
             // s3Upload(
@@ -58,7 +58,7 @@ void call(Map args = [:]) {
         String bundleFullPath = ['bundle', filename, version].join('/')
         for (Closure action : fileActions) {
             for (file in findFiles(glob: "**/${filename}-min-${version}*")) {
-                action(file)
+                action(file.getPath())
             }
         }
         // s3Upload(
@@ -70,7 +70,7 @@ void call(Map args = [:]) {
         // Distribution Artifact
         for (Closure action : fileActions) {
             for (file in findFiles(glob: "**/${filename}*-${version}*")) {
-                action(file)
+                action(file.getPath())
             }
         }
 
