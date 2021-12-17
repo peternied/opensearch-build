@@ -29,7 +29,7 @@ void call(Map args = [:]) {
 
     print("Actions ${fileActions}")
 
-    withAWS(role: "${ARTIFACT_PROMOTION_ROLE_NAME}", roleAccount: "${AWS_ACCOUNT_ARTIFACT}", duration: 900, roleSessionName: 'jenkins-session') {
+    // withAWS(role: "${ARTIFACT_PROMOTION_ROLE_NAME}", roleAccount: "${AWS_ACCOUNT_ARTIFACT}", duration: 900, roleSessionName: 'jenkins-session') {
         // Core Plugins
         println("Start Core Plugin Promotion to artifects.opensearch.org Bucket")
         List<String> corePluginList = buildManifest.components.artifacts."core-plugins"[0]
@@ -44,11 +44,11 @@ void call(Map args = [:]) {
                     action(file)
                 }
             } 
-            s3Upload(
-                bucket: "${ARTIFACT_PRODUCTION_BUCKET_NAME}",
-                path: "releases/$pluginFullPath/",
-                workingDir: "$WORKSPACE/artifacts/$artifactPath/builds/$filename/$pluginSubFolder/",
-                includePathPattern: "**/${pluginName}*")
+            // s3Upload(
+            //     bucket: "${ARTIFACT_PRODUCTION_BUCKET_NAME}",
+            //     path: "releases/$pluginFullPath/",
+            //     workingDir: "$WORKSPACE/artifacts/$artifactPath/builds/$filename/$pluginSubFolder/",
+            //     includePathPattern: "**/${pluginName}*")
         }
 
 
@@ -61,11 +61,11 @@ void call(Map args = [:]) {
                 action(file)
             }
         }
-        s3Upload(
-            bucket: "${ARTIFACT_PRODUCTION_BUCKET_NAME}",
-            path: "releases/$coreFullPath/",
-            workingDir: "$WORKSPACE/artifacts/$artifactPath/builds/$filename/dist/",
-            includePathPattern: "**/${filename}-min-${version}*")
+        // s3Upload(
+        //     bucket: "${ARTIFACT_PRODUCTION_BUCKET_NAME}",
+        //     path: "releases/$coreFullPath/",
+        //     workingDir: "$WORKSPACE/artifacts/$artifactPath/builds/$filename/dist/",
+        //     includePathPattern: "**/${filename}-min-${version}*")
 
         // Distribution Artifact
         for (Closure action : fileActions) {
@@ -74,10 +74,10 @@ void call(Map args = [:]) {
             }
         }
 
-        s3Upload(
-            bucket: "${ARTIFACT_PRODUCTION_BUCKET_NAME}",
-            path: "releases/$bundleFullPath/",
-            workingDir: "$WORKSPACE/artifacts/$artifactPath/dist/$filename/",
-            includePathPattern: "**/${filename}*-${version}*")
-    }
+        // s3Upload(
+        //     bucket: "${ARTIFACT_PRODUCTION_BUCKET_NAME}",
+        //     path: "releases/$bundleFullPath/",
+        //     workingDir: "$WORKSPACE/artifacts/$artifactPath/dist/$filename/",
+        //     includePathPattern: "**/${filename}*-${version}*")
+    // }
 }
