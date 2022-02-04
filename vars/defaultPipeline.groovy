@@ -1,5 +1,6 @@
 void call(Closure body) {
-    return  pipeline {
+    pipeline {
+        agent any
         stages{
             stage("Stage") {
                 steps {
