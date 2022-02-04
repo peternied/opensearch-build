@@ -16,7 +16,7 @@ void call(Map args = [:], Closure body) {
             timeout(time: 1, unit: 'HOURS')
         }
         stages{
-            stage("Release ${JOB-NAME}") {
+            stage("Release") {
                 steps {
                     script {
                         body()
