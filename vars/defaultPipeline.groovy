@@ -6,6 +6,7 @@ void call(Closure body) {
                 steps {
                     script {
                         echo "hello"
+                        body()
                     }
                 }
             }
