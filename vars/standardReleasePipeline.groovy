@@ -30,7 +30,7 @@ void call(Map args = [:], Closure body) {
                     postCleanup()
                     // Update to also do docker cleanup too
                     if (args.cleanup && args.cleanup instanceof Closure) {
-                        cleanup()
+                        args.cleanup()
                     }
                 }
             }
