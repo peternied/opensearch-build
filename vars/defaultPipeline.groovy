@@ -5,7 +5,7 @@ void call(Closure body) {
             stage("Stage") {
                 steps {
                     script {
-                        body()
+                        echo "hello"
                     }
                 }
             }
