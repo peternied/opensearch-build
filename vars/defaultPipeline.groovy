@@ -1,8 +1,8 @@
-void call(def stageName, Closure body) {
+void call(Closure body) {
     return  pipeline {
         agent any
         stages{
-            stage(stageName) {
+            stage("Stage") {
                 steps {
                     script {
                         body()
