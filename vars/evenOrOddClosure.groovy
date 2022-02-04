@@ -7,7 +7,9 @@ def call(int buildNumber, Closure body) {
         stage('Even Stage') {
           steps {
             echo "The build number is even"
-            body()
+            script {
+              body()
+            }
           }
         }
       }
@@ -19,7 +21,9 @@ def call(int buildNumber, Closure body) {
         stage('Odd Stage') {
           steps {
             echo "The build number is odd"
-            body()
+            script {
+              body()
+            }
           }
         }
       }
