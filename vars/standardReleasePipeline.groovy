@@ -29,8 +29,8 @@ void call(Map args = [:], Closure body) {
                 script {
                     postCleanup()
                     // Update to also do docker cleanup too
-                    if (args.additionalCleanup) {
-                        additionalCleanup()
+                    if (args.cleanup && instanceof Closure) {
+                        cleanup()
                     }
                 }
             }
