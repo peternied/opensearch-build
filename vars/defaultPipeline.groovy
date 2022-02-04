@@ -1,4 +1,4 @@
-void call() {
+void call(Closure body) {
     return  pipeline {
         agent any
         stages{
@@ -6,7 +6,7 @@ void call() {
                 steps {
                     script {
                         echo "hello"
-//                        body()
+                        body()
                     }
                 }
             }
