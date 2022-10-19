@@ -1,0 +1,22 @@
+---
+name: Find Supported OpenSearch Versions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  find-latest-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - id: echo-value
+        run: |
+          export all=$(ls manifests/**/opensearch*.yml | cut -d'/' -f2 | sort | uniq | grep -vE ^1\.4\.0)
+          export majors=$(ls manifests/**/opensearch*.yml | cut -d'/' -f2 | sort | uniq | cut -c 1 | uniq)
+          export latest_versions=$(echo $major | while IFS=$"\n" read -r c; do echo $(echo $all | grep ^$c | tail -n 1); done)
+          echo All is $all
+          echo Majors are $majors
+          echo Latest Versions are $latest_versions
+          echo "::set-output name=latest_versions::$(echo $latest_versions)"
+      - id: echo-done
+        run: echo ${{ steps.echo-value.outputs.latest_versions}}
