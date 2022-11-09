@@ -1,0 +1,25 @@
+---
+name: Pull Request For Every Commit
+
+on: [pull_request]
+
+jobs:
+  get-commits:
+    runs-on: ubuntu-latest
+    outputs:
+      commits: ${{ steps.get-pr-commits.outputs.commits }}
+    steps:
+      - id: 'get-pr-commits'
+        uses: tim-actions/get-pr-commits@v1.1.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  print-commit:
+    runs-on: ubuntu-latest
+    needs: get-commits
+    strategy:
+      matrix:
+        commit-id: ${{ needs.get-commits.outputs.commits }}
+    steps:
+      - run: |
+          echo ${{ matrix.commit-id }}
