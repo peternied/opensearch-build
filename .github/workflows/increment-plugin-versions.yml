@@ -70,10 +70,10 @@ jobs:
           ref: ${{ matrix.branch }}
       - id: pr-exists
         uses: fjenik/check-if-pr-exists@0.0.3
-          with:
-            repo-token: ${{ secrets.APP_PRIVATE_KEY }}
-            target-branch: ${{ matrix.branch }}
-            source-branch: create-pull-request/${{ env.OPENSEARCH_VERSION }}
+        with:
+          repo-token: ${{ secrets.APP_PRIVATE_KEY }}
+          target-branch: ${{ matrix.branch }}
+          source-branch: create-pull-request/${{ env.OPENSEARCH_VERSION }}
       - if: ${{ steps.pr-exists.outputs.is-pr-already-created == 'true' }}
         run: echo "Pull request already exists"
       - name: Increment Version in ${{ matrix.entry.repo }}
