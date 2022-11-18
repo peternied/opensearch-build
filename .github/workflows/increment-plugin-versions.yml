@@ -69,7 +69,7 @@ jobs:
           repository: peternied/${{ matrix.entry.repo }}
           ref: ${{ matrix.branch }}
       - id: pr-exists
-        uses: fjenik/check-if-pr-exists@0.0.3
+        uses: peternied/check-if-pr-exists@main
         with:
           repo-token: ${{ secrets.APP_PRIVATE_KEY }}
           target-branch: ${{ matrix.branch }}
