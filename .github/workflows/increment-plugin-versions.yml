@@ -68,11 +68,16 @@ jobs:
         with:
           repository: peternied/${{ matrix.entry.repo }}
           ref: ${{ matrix.branch }}
-          fetch-depth: 0
-      - name: Attempt to reuse existing pull request in plugin repo
-        run: git checkout create-pull-request/${{ env.OPENSEARCH_VERSION }}
-        continue-on-error: true
+      - id: pr-exists
+        uses: fjenik/check-if-pr-exists@0.0.3
+          with:
+            repo-token: ${{ secrets.APP_PRIVATE_KEY }}
+            target-branch: ${{ matrix.branch }}
+            source-branch: create-pull-request/${{ env.OPENSEARCH_VERSION }}
+      - if: ${{ steps.pr-exists.outputs.is-pr-already-created == 'true' }}
+        run: echo "Pull request already exists"
       - name: Increment Version in ${{ matrix.entry.repo }}
+        if: ${{ steps.pr-exists.outputs.is-pr-already-created == 'false' }}
         run: |
           echo "OpenSearch Core repo version on branch ${{ matrix.branch }} is ${{ env.OPENSEARCH_VERSION_NUMBER }}"
           if [ ${{ matrix.entry.path }} ]; then
@@ -81,6 +86,7 @@ jobs:
           fi
           ./gradlew updateVersion -DnewVersion=${{ env.OPENSEARCH_VERSION }}
       - name: Create Pull Request
+        if: ${{ steps.pr-exists.outputs.is-pr-already-created == 'false' }}
         id: cpr
         uses: peter-evans/create-pull-request@v4
         with:
@@ -97,6 +103,7 @@ jobs:
           body: |
             - Incremented version to **${{ env.OPENSEARCH_VERSION }}**.
       - name: Check outputs
+        if: ${{ steps.pr-exists.outputs.is-pr-already-created == 'false' }}
         run: |-
           echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
           echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"

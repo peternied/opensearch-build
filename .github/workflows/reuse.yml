@@ -1,0 +1,29 @@
+---
+name: reusable
+
+on:
+  workflow_dispatch
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          ls
+  job2:
+    runs-on: "composite"
+    needs: job1
+    steps:
+      - run: |
+          ls
+  job3:
+    runs-on: "composite"
+    needs: job1
+    steps:
+      - run: python --version
+  job4:
+    runs-on: "composite"
+    needs: job2
+    steps:
+      - run: python --version
